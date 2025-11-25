@@ -1,4 +1,4 @@
-package com.ups.week2;
+package com.ups.cohort;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

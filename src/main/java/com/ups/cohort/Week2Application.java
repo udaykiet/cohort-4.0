@@ -1,4 +1,4 @@
-package com.ups.week2;
+package com.ups.cohort;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
