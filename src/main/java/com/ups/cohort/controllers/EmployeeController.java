@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ups.cohort.dtos.EmployeeDto;
 import com.ups.cohort.services.EmployeeService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/employees")
@@ -27,7 +28,7 @@ public class EmployeeController {
 	}
 
 	@PostMapping()
-	public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto) {
+	public EmployeeDto createEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
 		return employeeService.createEmployee(employeeDto);
 	}
 
