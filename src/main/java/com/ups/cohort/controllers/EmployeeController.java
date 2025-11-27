@@ -3,6 +3,8 @@ package com.ups.cohort.controllers;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,60 +29,55 @@ public class EmployeeController {
 		this.employeeService = employeeService;
 	}
 
+	//CREATE
 	@PostMapping()
-	public EmployeeDto createEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
-		return employeeService.createEmployee(employeeDto);
+	public ResponseEntity<EmployeeDto> createEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
+		EmployeeDto created = employeeService.createEmployee(employeeDto);
+
+		return ResponseEntity
+				.status(HttpStatus.CREATED) //201
+				.body(created);
 	}
 
+	//GET BY ID
 	@GetMapping("/{employeeId}")
-	public EmployeeDto getEmployee(@PathVariable("employeeId") Long employeeId) {
-		return employeeService.getEmployeeById(employeeId);
+	public ResponseEntity<EmployeeDto> getEmployee(@PathVariable("employeeId") Long employeeId) {
+		EmployeeDto employee = employeeService.getEmployeeById(employeeId);
+		return ResponseEntity.ok(employee);
+
 	}
 
+	//GET ALL
 	@GetMapping()
-	public List<EmployeeDto> getAllEmployees(){
-		return employeeService.getAllEmployees();
+	public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
+		return ResponseEntity.ok(employeeService.getAllEmployees());
 	}
 
+	//UPDATE FULL
 	@PutMapping("/{employeeId}")
-	public EmployeeDto updateEmployee(@PathVariable Long employeeId,
-	                                  @RequestBody EmployeeDto employeeDto){
-		return employeeService.updateEmployee(employeeId , employeeDto);
+	public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable Long employeeId,
+	                                                  @RequestBody EmployeeDto employeeDto) {
+		EmployeeDto employee = employeeService.updateEmployee(employeeId, employeeDto);
+		return ResponseEntity.ok(employee);
 	}
 
+	//UPDATE PARTIAL
 	@PatchMapping("/{employeeId}")
-	public EmployeeDto updateEmployeePartially(@PathVariable Long employeeId,
-	                                           @RequestBody Map<String , Object> updates){
-		return employeeService.updateEmployeePartially(employeeId , updates);
+	public ResponseEntity<EmployeeDto> updateEmployeePartially(@PathVariable Long employeeId,
+	                                                           @RequestBody Map<String, Object> updates) {
+		EmployeeDto employee = employeeService.updateEmployeePartially(employeeId, updates);
+		return ResponseEntity.ok(employee);
 	}
 
 
-
+	//DELETE
 	@DeleteMapping("/{employeeId}")
-	public String deleteEmployee(@PathVariable Long employeeId){
+	public ResponseEntity<String> deleteEmployee(@PathVariable Long employeeId) {
 		employeeService.deleteEmployee(employeeId);
-		return "employee Deleted with id " + employeeId;
+		return ResponseEntity
+				.status(HttpStatus.NO_CONTENT) // 204
+				.body("Employee deleted with id : " + employeeId);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	@GetMapping("/health")

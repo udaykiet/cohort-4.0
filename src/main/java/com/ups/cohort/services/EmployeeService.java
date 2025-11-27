@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ups.cohort.dtos.EmployeeDto;
 import com.ups.cohort.entities.EmployeeEntity;
+import com.ups.cohort.exceptions.ResourceNotFoundException;
 import com.ups.cohort.repositories.EmployeeRepository;
 
 @Service
@@ -28,7 +29,8 @@ public class EmployeeService {
 	}
 
 	public EmployeeDto getEmployeeById(Long employeeId) {
-		EmployeeEntity employeeEntity = employeeRepository.findById(employeeId).orElse(null);
+		EmployeeEntity employeeEntity = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
 		return modelMapper.map(employeeEntity, EmployeeDto.class);
 	}
 
@@ -41,7 +43,8 @@ public class EmployeeService {
 	}
 
 	public EmployeeDto updateEmployee(Long employeeId, EmployeeDto employeeDto) {
-		EmployeeEntity employeeEntity = employeeRepository.findById(employeeId).orElse(null);
+		EmployeeEntity employeeEntity = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
 
 
 		employeeEntity.setEmail(employeeDto.getEmail());
@@ -49,14 +52,15 @@ public class EmployeeService {
 		employeeEntity.setName(employeeDto.getName());
 		employeeEntity.setSalary(employeeDto.getSalary());
 
-		return modelMapper.map(employeeRepository.save(employeeEntity) , EmployeeDto.class);
+		return modelMapper.map(employeeRepository.save(employeeEntity), EmployeeDto.class);
 
 	}
 
 	public EmployeeDto updateEmployeePartially(Long employeeId, Map<String, Object> updates) {
-		EmployeeEntity employeeEntity = employeeRepository.findById(employeeId).orElse(null);
+		EmployeeEntity employeeEntity = employeeRepository.findById(employeeId)
+				.orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
 
-		updates.forEach((key , value) -> {
+		updates.forEach((key, value) -> {
 			switch (key) {
 				case "name":
 					employeeEntity.setName((String) value);
@@ -72,14 +76,18 @@ public class EmployeeService {
 					employeeEntity.setSalary((double) value);
 					break;
 
+
 			}
 		});
 
-		return modelMapper.map(employeeRepository.save(employeeEntity) , EmployeeDto.class);
+		return modelMapper.map(employeeRepository.save(employeeEntity), EmployeeDto.class);
 
 	}
 
 	public void deleteEmployee(Long employeeId) {
+		if (!employeeRepository.existsById(employeeId)) {
+			throw new ResourceNotFoundException("Employee not found with id: " + employeeId);
+		}
 		employeeRepository.deleteById(employeeId);
 	}
 
