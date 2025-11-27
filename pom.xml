@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ups</groupId>
-	<artifactId>week2</artifactId>
+	<artifactId>0</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>week2</name>
 	<description>contains everything about the REST apis</description>
