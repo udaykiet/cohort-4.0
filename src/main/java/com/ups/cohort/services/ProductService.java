@@ -1,5 +1,6 @@
 package com.ups.cohort.services;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,4 +66,11 @@ public class ProductService {
 		productRepository.delete(existingProduct);
 	}
 
+	public List<ProductDto> filterOnStock(int stock) {
+		List<ProductEntity> products = productRepository.findByStockLessThan(stock);
+		return products
+				.stream()
+				.map(productEntity -> modelMapper.map(productEntity , ProductDto.class))
+				.collect(Collectors.toList());
+	}
 }

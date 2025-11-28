@@ -1,5 +1,7 @@
 package com.ups.cohort.controllers;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -80,4 +82,27 @@ public class ProductController {
 				.status(HttpStatus.NO_CONTENT)
 				.body("product deleted successfully");
 	}
+
+
+	//Filtering in the stock
+	@GetMapping("/filter/stock")
+	public List<ProductDto> filterOnStock(
+			@RequestParam int stock
+	){
+		List<ProductDto> products = productService.filterOnStock(stock);
+		return products;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
