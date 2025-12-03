@@ -29,6 +29,12 @@ public class ProductService {
 	// CREATE
 	public ProductDto createProduct(ProductDto requestDto) {
 		ProductEntity product = modelMapper.map(requestDto, ProductEntity.class);
+
+		if(product.getProductDetail() != null){
+			product.getProductDetail().setProduct(product);
+		}
+
+
 		ProductEntity savedProduct = productRepository.save(product);
 		return modelMapper.map(savedProduct, ProductDto.class);
 	}

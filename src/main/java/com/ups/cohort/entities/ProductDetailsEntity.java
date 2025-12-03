@@ -45,9 +45,9 @@ public class ProductDetailsEntity {
 	private String modelNumber;
 
 
-//
-//	@OneToOne(
-//			mappedBy = "productDetail"
-//	)
-//	private ProductEntity product; // INVERSE SIDE
+
+	@OneToOne(
+			mappedBy = "productDetail"
+	)
+	private ProductEntity product; // INVERSE SIDE
 }
