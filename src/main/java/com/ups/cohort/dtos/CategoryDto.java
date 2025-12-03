@@ -1,6 +1,5 @@
 package com.ups.cohort.dtos;
 
-import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+public class CategoryDto {
 	private String name;
 	private String description;
-	private BigDecimal price;
-	private Integer stock;
-
-	private ProductDetailDto productDetail;
 }

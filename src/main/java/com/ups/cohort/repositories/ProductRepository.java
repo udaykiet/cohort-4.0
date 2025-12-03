@@ -17,3 +17,4 @@ public interface ProductRepository extends JpaRepository<ProductEntity , Long> {
 	List<ProductEntity> findByStockLessThan(int stock);
 
 }
+

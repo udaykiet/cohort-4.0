@@ -1,0 +1,20 @@
+
+
+
+
+//project ER diagram
+
+
+
+Category (1) -------- (∞) Product (∞) -------- (1) Brand
+                             |
+                             | (1-1)
+                             |
+                       ProductDetail
+                             |
+                             | (∞-∞)
+                             |
+                            Tag
+
+Order (1) -------- (∞) OrderItem (∞) -------- (1) Product
+
