@@ -18,4 +18,5 @@ public class ProductDto {
 	private Integer stock;
 
 	private ProductDetailDto productDetail;
+	private CategoryDto category;
 }

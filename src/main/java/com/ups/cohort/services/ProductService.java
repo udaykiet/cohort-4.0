@@ -34,7 +34,6 @@ public class ProductService {
 			product.getProductDetail().setProduct(product);
 		}
 
-
 		ProductEntity savedProduct = productRepository.save(product);
 		return modelMapper.map(savedProduct, ProductDto.class);
 	}

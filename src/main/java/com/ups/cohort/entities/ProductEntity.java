@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -55,4 +56,11 @@ public class ProductEntity {
 			name = "product_detail_id"
 	)
 	private ProductDetailsEntity productDetail;  // OWNING SIDE
+
+
+	@ManyToOne
+	@JoinColumn(
+			name =  "category_id"
+	)
+	private CategoryEntity category; // OWNING SIDE
 }
