@@ -2,6 +2,7 @@ package com.ups.cohort.dtos.response;
 
 import java.math.BigDecimal;
 
+import com.ups.cohort.entities.CategoryEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
