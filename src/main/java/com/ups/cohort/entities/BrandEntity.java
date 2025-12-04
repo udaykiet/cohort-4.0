@@ -1,10 +1,13 @@
 package com.ups.cohort.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -34,4 +37,7 @@ public class BrandEntity {
 
 	@Column(nullable = false , length = 300)
 	private String description;
+
+	@OneToMany(mappedBy = "brand")
+	private List<ProductEntity> products;
 }

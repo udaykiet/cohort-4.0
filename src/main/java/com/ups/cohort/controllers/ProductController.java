@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ups.cohort.dtos.ProductDto;
+import com.ups.cohort.dtos.UpdateProductBrandRequest;
 import com.ups.cohort.dtos.UpdateProductCategoryRequest;
 import com.ups.cohort.dtos.response.ProductListDto;
 import com.ups.cohort.services.ProductService;
@@ -111,4 +112,14 @@ public class ProductController {
 	) {
 		return ResponseEntity.ok(productService.fetchAllProductOfACategory(categoryId));
 	}
+
+	//CHANGE THE BRAND OF THE PRODUCT
+	@PutMapping("/{productId}/brand")
+	public ResponseEntity<ProductDto> updateProductBrand(
+			@PathVariable Long productId,
+			@RequestBody UpdateProductBrandRequest updateProductBrandRequest
+			){
+		return ResponseEntity.ok(productService.updateProductBrand( productId , updateProductBrandRequest));
+	}
+
 }

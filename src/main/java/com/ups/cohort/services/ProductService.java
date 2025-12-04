@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ups.cohort.dtos.ProductDto;
+import com.ups.cohort.dtos.UpdateProductBrandRequest;
 import com.ups.cohort.dtos.UpdateProductCategoryRequest;
 import com.ups.cohort.dtos.response.ProductListDto;
 import com.ups.cohort.entities.BrandEntity;
@@ -59,7 +60,7 @@ public class ProductService {
 		}
 
 		ProductEntity savedProduct = productRepository.save(product);
-		System.out.println(savedProduct.getCategory().getName());
+//		System.out.println(savedProduct.getCategory().getName());
 		return modelMapper.map(savedProduct, ProductDto.class);
 	}
 
@@ -130,4 +131,15 @@ public class ProductService {
 	}
 
 
+	public ProductDto updateProductBrand(Long productId , UpdateProductBrandRequest updateProductBrandRequest) {
+		ProductEntity product = productRepository.findById(productId)
+				.orElseThrow(() -> new ResourceNotFoundException("product not found with id: " + productId));
+
+		BrandEntity brand = brandRepository.findById(updateProductBrandRequest.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("brand not found with id: " + updateProductBrandRequest.getId()));
+
+		product.setBrand(brand);
+		return modelMapper.map(productRepository.save(product) , ProductDto.class);
+	}
 }
+
