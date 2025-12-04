@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ups.cohort.dtos.ProductDto;
+import com.ups.cohort.dtos.UpdateProductCategoryRequest;
+import com.ups.cohort.dtos.response.ProductListDto;
 import com.ups.cohort.services.ProductService;
 
 @RestController
@@ -48,13 +50,13 @@ public class ProductController {
 			@RequestParam(defaultValue = "10") int pageSize,
 			@RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "asc") String sortDirection
-			) {
+	) {
 
 		Sort sort = sortDirection.equalsIgnoreCase("asc")
 				? Sort.by(sortBy).ascending()
 				: Sort.by(sortBy).descending();
 
-		Pageable pageable = PageRequest.of(page, pageSize , sort);
+		Pageable pageable = PageRequest.of(page, pageSize, sort);
 		Page<ProductDto> products = productService.getAllProducts(pageable);
 		return ResponseEntity.ok(products);
 	}
@@ -88,8 +90,25 @@ public class ProductController {
 	@GetMapping("/filter/stock")
 	public List<ProductDto> filterOnStock(
 			@RequestParam int stock
-	){
+	) {
 		List<ProductDto> products = productService.filterOnStock(stock);
 		return products;
+	}
+
+	//Update the product category
+	@PutMapping("/{productId}/category")
+	public ResponseEntity<ProductDto> updateProductCategory(
+			@PathVariable Long productId,
+			@RequestBody UpdateProductCategoryRequest updateProductCategoryRequest
+	) {
+		ProductDto product = productService.updateProductCategory(productId, updateProductCategoryRequest);
+		return ResponseEntity.ok(product);
+	}
+
+	@GetMapping("/fetchAll/{categoryId}")
+	public ResponseEntity<List<ProductListDto>> fetchAllProductOfACategory(
+			@PathVariable Long categoryId
+	) {
+		return ResponseEntity.ok(productService.fetchAllProductOfACategory(categoryId));
 	}
 }

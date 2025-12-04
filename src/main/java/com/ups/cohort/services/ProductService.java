@@ -1,6 +1,5 @@
 package com.ups.cohort.services;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,18 +9,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ups.cohort.dtos.ProductDto;
+import com.ups.cohort.dtos.UpdateProductCategoryRequest;
+import com.ups.cohort.dtos.response.ProductListDto;
+import com.ups.cohort.entities.CategoryEntity;
 import com.ups.cohort.entities.ProductEntity;
 import com.ups.cohort.exceptions.ResourceNotFoundException;
+import com.ups.cohort.repositories.CategoryRepository;
 import com.ups.cohort.repositories.ProductRepository;
 
 @Service
 public class ProductService {
 
 	private final ProductRepository productRepository;
+	private final CategoryRepository categoryRepository;
 	private final ModelMapper modelMapper;
 
-	public ProductService(ProductRepository productRepository , ModelMapper modelMapper) {
+	public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ModelMapper modelMapper) {
 		this.productRepository = productRepository;
+		this.categoryRepository = categoryRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -78,4 +83,31 @@ public class ProductService {
 				.map(productEntity -> modelMapper.map(productEntity , ProductDto.class))
 				.collect(Collectors.toList());
 	}
+
+	//UPDATE CATEGORY OF THE PRODUCT
+	public ProductDto updateProductCategory(Long productId, UpdateProductCategoryRequest updateProductCategoryRequest) {
+		ProductEntity existingProduct = productRepository.findById(productId)
+				.orElseThrow( () -> new ResourceNotFoundException("product not found with id: " + productId));
+
+		CategoryEntity existingCategory = categoryRepository.findById(updateProductCategoryRequest.getCategoryId())
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + updateProductCategoryRequest.getCategoryId() ));
+
+		existingProduct.setCategory(existingCategory);
+
+		return modelMapper.map(productRepository.save(existingProduct) , ProductDto.class);
+
+	}
+
+	public List<ProductListDto> fetchAllProductOfACategory(Long categoryId) {
+		CategoryEntity category = categoryRepository.findById(categoryId)
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + categoryId));
+
+		List<ProductEntity> productEntities = productRepository.findByCategoryId(categoryId);
+		return productEntities
+				.stream()
+				.map(productEntity -> modelMapper.map(productEntity , ProductListDto.class))
+				.collect(Collectors.toList());
+	}
+
+
 }
